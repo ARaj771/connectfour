@@ -55,6 +55,7 @@ function makeHtmlBoard() {
     for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement("td");
       cell.setAttribute("id", `${y}-${x}`);
+     
       row.append(cell);
     }
     htmlBoard.append(row);
@@ -65,9 +66,14 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
-  
-    return 0;
+    for(let y = HEIGHT - 1; y >= 0; y--){
+      if(board[y][x] === null){
+      return y;
+    }
   }
+  return null;
+   
+}
   
   
 
@@ -80,9 +86,10 @@ let token = document.createElement('div');
 token.classList.add('piece');
 currPlayer === 1 ?  token.classList.add('p1'):token.classList.add('p2')
 let cell = document.getElementById (`${y}-${x}`);
+console.log(cell);
 cell.append(token);
-let table = document.getElementById('board');
- table.append(token);
+// let table = document.getElementById('board');
+//   table.append(token);
 
 }
 
@@ -104,7 +111,6 @@ function handleClick(evt) {
 
   // get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
-  console.log(y)
   if (y === null) {
     return;
   }
