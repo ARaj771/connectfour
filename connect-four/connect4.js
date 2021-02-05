@@ -31,7 +31,7 @@ function makeBoard() {
 
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-  let htmlBoard = document.querySelector('#board');
+  const htmlBoard = document.querySelector('#board');
   // TODO: add comment for this code
   //creating the top row of the table with id column -top and adding a click eventListener.
   let  top = document.createElement("tr");
@@ -82,14 +82,13 @@ function findSpotForCol(x) {
 
 function placeInTable(y,x) {
   // TODO: make a div and insert into correct table cell
-let token = document.createElement('div');
+const  token = document.createElement('div');
 token.classList.add('piece');
 currPlayer === 1 ?  token.classList.add('p1'):token.classList.add('p2')
 let cell = document.getElementById (`${y}-${x}`);
-console.log(cell);
+
 cell.append(token);
-// let table = document.getElementById('board');
-//   table.append(token);
+
 
 }
 
@@ -106,11 +105,11 @@ alert(msg);
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  let x = +evt.target.id;
+  const x = +evt.target.id;
  
 
   // get next spot in column (if none, ignore click)
-  let y = findSpotForCol(x);
+  const y = findSpotForCol(x);
   if (y === null) {
     return;
   }
@@ -128,9 +127,13 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
-  board.every(function(val){
-    return val === null;
-  })
+ 
+  // check if any cell is has Null,if so then the board is not full. if any cell does have null the function return false and does nothing. Otherwise it returns true and calls endgame. 
+ if( board.every(row => row.every(cell=> cell)))
+ {
+   return endGame('This game is a tie!');
+ }
+  
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
@@ -159,10 +162,11 @@ function checkForWin() {
    //determines if 4 cells horizontally, vertically or diagonally have the same player number
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
-      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-      let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-      let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]]; // checks to horizontally to see if same player  occupies four consectivally
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]]; //checks vertical consecutive
+      let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]]; // checks diagonal up
+      let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]]; // checks diagonal down
+      
 
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
